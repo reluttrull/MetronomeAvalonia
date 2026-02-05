@@ -1,4 +1,6 @@
-﻿using Avalonia.Threading;
+﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -14,8 +16,10 @@ namespace MetronomeMVVM.ViewModels
         [ObservableProperty]
         public int _bpm = 60; // current beats per minute
         [ObservableProperty]
-        public int _numCounts = 4; // current meter
-        private int interval = 5; // current amount to change +/- bpm when user clicks buttons
+        public Enums.NumCounts _numCounts = Enums.NumCounts.Four; // current meter
+        [ObservableProperty]
+        private int _interval = 5; // current amount to change +/- bpm when user clicks buttons
+
         public MainWindowViewModel()
         {
             StartMetronome();
@@ -24,7 +28,7 @@ namespace MetronomeMVVM.ViewModels
         [MemberNotNull(nameof(timer))]
         public void StartMetronome()
         {
-            System.Diagnostics.Debug.WriteLine($"setting metronome to {Bpm} bpm");
+            //System.Diagnostics.Debug.WriteLine($"setting metronome to {Bpm} bpm");
             if (timer is not null)
             {
                 timer.Enabled = false;
@@ -41,13 +45,13 @@ namespace MetronomeMVVM.ViewModels
 
         public void IncreaseBpm()
         {
-            Bpm += interval;
+            Bpm += Interval;
             StartMetronome();
         }
 
         public void DecreaseBpm()
         {
-            Bpm -= interval;
+            Bpm -= Interval;
             StartMetronome();
         }
 
@@ -55,8 +59,8 @@ namespace MetronomeMVVM.ViewModels
         {
             Dispatcher.UIThread.Post(() =>
             {
-                Count = ((Count) % NumCounts) + 1;
-                System.Diagnostics.Debug.WriteLine($"Count: {Count} at {e.SignalTime:HH:mm:ss.fff}");
+                Count = ((Count) % (int)NumCounts) + 1;
+                //System.Diagnostics.Debug.WriteLine($"Count: {Count} at {e.SignalTime:HH:mm:ss.fff}");
             });
         }
 

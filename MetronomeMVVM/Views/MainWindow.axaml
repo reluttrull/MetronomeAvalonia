@@ -1,4 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
+        xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
+		xmlns:enums="clr-namespace:MetronomeMVVM.Enums"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:MetronomeMVVM.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,6 +10,10 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="MetronomeMVVM">
+
+	<Window.Resources>
+		<converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+	</Window.Resources>
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -21,13 +27,24 @@
 			ColumnDefinitions="Auto, Auto"
 			RowDefinitions="Auto, Auto">
 			<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Bpm}" />
-			<TextBlock Grid.Row="0" Grid.Column="1" Text=" BPM" />
+			<TextBlock Grid.Row="0" Grid.Column="1" Text=" Beats per minute" />
+		</Grid>
+		<Grid
+			ColumnDefinitions="Auto, Auto, Auto, Auto"
+			RowDefinitions="Auto, Auto">
+			<RadioButton GroupName="Meter" Content="2" IsChecked="{Binding NumCounts, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static enums:NumCounts.Two}}" 
+							Grid.Row="0" Grid.Column="0"/>
+			<RadioButton GroupName="Meter" Content="3" IsChecked="{Binding NumCounts, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static enums:NumCounts.Three}}" 
+							Grid.Row="0" Grid.Column="1"/>
+			<RadioButton GroupName="Meter" Content="4" IsChecked="{Binding NumCounts, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static enums:NumCounts.Four}}" 
+							Grid.Row="0" Grid.Column="2"/>
+			<TextBlock Grid.Row="0" Grid.Column="3" Text=" Beats per measure" />
 		</Grid>
 		<Grid
 			ColumnDefinitions="Auto, Auto"
 			RowDefinitions="Auto, Auto">
-			<Button Grid.Row="0" Grid.Column="0" Command="{Binding DecreaseBpm}">-</Button>
-			<Button Grid.Row="0" Grid.Column="1" Command="{Binding IncreaseBpm}">+</Button>
+			<Button Grid.Row="0" Grid.Column="0" Command="{Binding DecreaseBpm}" Content="{Binding Interval, StringFormat='-{0}'}" />
+			<Button Grid.Row="0" Grid.Column="1" Command="{Binding IncreaseBpm}" Content="{Binding Interval, StringFormat='+{0}'}" />
 		</Grid>
 		<TextBlock Text="{Binding Count}" />
 	</StackPanel>
