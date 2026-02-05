@@ -1,6 +1,7 @@
 ﻿using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Timers;
 
 namespace MetronomeMVVM.ViewModels
@@ -9,17 +10,18 @@ namespace MetronomeMVVM.ViewModels
     {
         private Timer timer;
         [ObservableProperty]
-        public int _count = 0;
+        public int _count = 0; // current count within meter
         [ObservableProperty]
-        public int _bpm = 60;
+        public int _bpm = 60; // current beats per minute
         [ObservableProperty]
-        public int _numCounts = 4;
-        private int interval = 5;
+        public int _numCounts = 4; // current meter
+        private int interval = 5; // current amount to change +/- bpm when user clicks buttons
         public MainWindowViewModel()
         {
             StartMetronome();
         }
 
+        [MemberNotNull(nameof(timer))]
         public void StartMetronome()
         {
             System.Diagnostics.Debug.WriteLine($"setting metronome to {Bpm} bpm");
@@ -49,7 +51,7 @@ namespace MetronomeMVVM.ViewModels
             StartMetronome();
         }
 
-        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        private void OnTimedEvent(Object? source, ElapsedEventArgs e)
         {
             Dispatcher.UIThread.Post(() =>
             {
@@ -58,7 +60,7 @@ namespace MetronomeMVVM.ViewModels
             });
         }
 
-        private int BpmToMillis(int bpm)
+        private static int BpmToMillis(int bpm)
         {
             return (int)(1000 / ((decimal)bpm / 60));
         }
