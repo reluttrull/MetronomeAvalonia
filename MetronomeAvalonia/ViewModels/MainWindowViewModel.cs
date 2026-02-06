@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Timers;
 using SFML.Audio;
+using System.IO;
 
 namespace MetronomeMVVM.ViewModels
 {
@@ -21,11 +22,26 @@ namespace MetronomeMVVM.ViewModels
         [ObservableProperty]
         private int _interval = 5; // current amount to change +/- bpm when user clicks buttons
 
-        private Sound sound = new Sound(new SoundBuffer("Assets/hit.mp3"));
+        private Sound? sound;
 
         public MainWindowViewModel()
         {
+            InitializeSound();
             StartMetronome();
+        }
+
+        private void InitializeSound()
+        {
+            try
+            {
+                var assemblyDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var soundPath = Path.Combine(assemblyDirectory, "Assets", "hit.mp3");
+                sound = new Sound(new SoundBuffer(soundPath));
+            }
+            catch
+            {
+                sound = null;
+            }
         }
 
         [MemberNotNull(nameof(timer))]
@@ -62,9 +78,9 @@ namespace MetronomeMVVM.ViewModels
         {
             Dispatcher.UIThread.Post(() =>
             {
-                sound.Play();
+                sound?.Play();
                 Count = ((Count) % (int)NumCounts) + 1;
-                //System.Diagnostics.Debug.WriteLine($"Count: {Count} at {e.SignalTime:HH:mm:ss.fff}");
+                System.Diagnostics.Debug.WriteLine($"Count: {Count} at {e.SignalTime:HH:mm:ss.fff}");
             });
         }
 

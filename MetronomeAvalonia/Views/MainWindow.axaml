@@ -15,14 +15,21 @@
 		<converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
 	</Window.Resources>
 
+	<Window.Styles>
+		<Style Selector="TextBlock.h1">
+			<Setter Property="FontSize" Value="24" />
+			<Setter Property="FontWeight" Value="Bold" />
+		</Style>
+	</Window.Styles>
+
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-	<StackPanel>
-		<TextBlock Text="Metronome" />
+	<StackPanel Spacing="10">
+		<TextBlock Classes="h1" Text="Metronome" />
 		<Grid
 			ColumnDefinitions="Auto, Auto"
 			RowDefinitions="Auto, Auto">
@@ -38,7 +45,7 @@
 							Grid.Row="0" Grid.Column="1"/>
 			<RadioButton GroupName="Meter" Content="4" IsChecked="{Binding NumCounts, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static enums:NumCounts.Four}}" 
 							Grid.Row="0" Grid.Column="2"/>
-			<TextBlock Grid.Row="0" Grid.Column="3" Text=" Beats per measure" />
+			<TextBlock Grid.Row="0" Grid.Column="3" Text=" Beats" />
 		</Grid>
 		<Grid
 			ColumnDefinitions="Auto, Auto"
