@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Timers;
+using SFML.Audio;
 
 namespace MetronomeMVVM.ViewModels
 {
@@ -19,6 +20,8 @@ namespace MetronomeMVVM.ViewModels
         public Enums.NumCounts _numCounts = Enums.NumCounts.Four; // current meter
         [ObservableProperty]
         private int _interval = 5; // current amount to change +/- bpm when user clicks buttons
+
+        private Sound sound = new Sound(new SoundBuffer("Assets/hit.mp3"));
 
         public MainWindowViewModel()
         {
@@ -59,6 +62,7 @@ namespace MetronomeMVVM.ViewModels
         {
             Dispatcher.UIThread.Post(() =>
             {
+                sound.Play();
                 Count = ((Count) % (int)NumCounts) + 1;
                 //System.Diagnostics.Debug.WriteLine($"Count: {Count} at {e.SignalTime:HH:mm:ss.fff}");
             });
