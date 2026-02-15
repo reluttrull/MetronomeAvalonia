@@ -2,11 +2,14 @@
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Timers;
 using SFML.Audio;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
+using System.Timers;
 
 namespace MetronomeMVVM.ViewModels
 {
@@ -20,11 +23,13 @@ namespace MetronomeMVVM.ViewModels
         [ObservableProperty]
         public Enums.NumCounts _numCounts = Enums.NumCounts.Four; // current meter
         [ObservableProperty]
+        public ObservableCollection<bool?> _beatStates = [true, true, true, true]; // accents - true: accent, false: normal, null: silent
+        [ObservableProperty]
         private int _largeInterval = 5;
         [ObservableProperty]
         private int _smallInterval = 1;
 
-        private Sound? sound;
+        private Sound? normalSound;
 
         public MainWindowViewModel()
         {
@@ -38,11 +43,11 @@ namespace MetronomeMVVM.ViewModels
             {
                 var assemblyDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 var soundPath = Path.Combine(assemblyDirectory, "Assets", "hit.mp3");
-                sound = new Sound(new SoundBuffer(soundPath));
+                normalSound = new Sound(new SoundBuffer(soundPath));
             }
             catch
             {
-                sound = null;
+                normalSound = null;
             }
         }
 
@@ -76,11 +81,31 @@ namespace MetronomeMVVM.ViewModels
             StartMetronome();
         }
 
+        public void ChangeMeter(int diff)
+        {
+            if ((int)NumCounts + diff < 2 || (int)NumCounts + diff > 6) return;
+            NumCounts += diff;
+            if (diff > 0)
+            {
+                for (int i = 0; i < diff; i++)
+                {
+                    BeatStates.Add(true);
+                }
+            }
+            else
+            {
+                for (int i = 0; i > diff; i--)
+                {
+                    BeatStates.RemoveAt(BeatStates.Count - 1);
+                }
+            }
+        }
+
         private void OnTimedEvent(Object? source, ElapsedEventArgs e)
         {
             Dispatcher.UIThread.Post(() =>
             {
-                sound?.Play();
+                normalSound?.Play();
                 Count = ((Count) % (int)NumCounts) + 1;
                 System.Diagnostics.Debug.WriteLine($"Count: {Count} at {e.SignalTime:HH:mm:ss.fff}");
             });

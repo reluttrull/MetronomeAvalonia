@@ -35,21 +35,23 @@
 	<StackPanel Spacing="10">
 		<TextBlock Classes="h1" Text="Metronome" />
 		<Grid
+			ColumnDefinitions="Auto, Auto, Auto"
+			RowDefinitions="Auto">
+			<ItemsControl ItemsSource="{Binding BeatStates}" Grid.Column="0" >
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<ToggleButton IsThreeState="True" IsChecked="{Binding .}" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			<Button Grid.Column="1" VerticalAlignment="Top" Command="{Binding ChangeMeter}" CommandParameter="-1" Content="-" />
+			<Button Grid.Column="2" VerticalAlignment="Top" Command="{Binding ChangeMeter}" CommandParameter="1" Content="+" />
+		</Grid>
+		<Grid
 			ColumnDefinitions="Auto, Auto"
 			RowDefinitions="Auto, Auto">
 			<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Bpm}" />
 			<TextBlock Grid.Row="0" Grid.Column="1" Text=" Beats per minute" />
-		</Grid>
-		<Grid
-			ColumnDefinitions="Auto, Auto, Auto, Auto"
-			RowDefinitions="Auto, Auto">
-			<RadioButton GroupName="Meter" Content="2" IsChecked="{Binding NumCounts, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static enums:NumCounts.Two}}" 
-							Grid.Row="0" Grid.Column="0"/>
-			<RadioButton GroupName="Meter" Content="3" IsChecked="{Binding NumCounts, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static enums:NumCounts.Three}}" 
-							Grid.Row="0" Grid.Column="1"/>
-			<RadioButton GroupName="Meter" Content="4" IsChecked="{Binding NumCounts, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static enums:NumCounts.Four}}" 
-							Grid.Row="0" Grid.Column="2"/>
-			<TextBlock Grid.Row="0" Grid.Column="3" Text=" Beats" />
 		</Grid>
 		<Grid
 			ColumnDefinitions="Auto, Auto, Auto, Auto"
