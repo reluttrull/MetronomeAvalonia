@@ -20,7 +20,9 @@ namespace MetronomeMVVM.ViewModels
         [ObservableProperty]
         public Enums.NumCounts _numCounts = Enums.NumCounts.Four; // current meter
         [ObservableProperty]
-        private int _interval = 5; // current amount to change +/- bpm when user clicks buttons
+        private int _largeInterval = 5;
+        [ObservableProperty]
+        private int _smallInterval = 1;
 
         private Sound? sound;
 
@@ -62,15 +64,15 @@ namespace MetronomeMVVM.ViewModels
             timer.Enabled = true;
         }
 
-        public void IncreaseBpm()
+        public void IncreaseBpm(int interval)
         {
-            Bpm += Interval;
+            Bpm += interval;
             StartMetronome();
         }
 
-        public void DecreaseBpm()
+        public void DecreaseBpm(int interval)
         {
-            Bpm -= Interval;
+            Bpm -= interval;
             StartMetronome();
         }
 

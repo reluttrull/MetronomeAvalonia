@@ -20,6 +20,10 @@
 			<Setter Property="FontSize" Value="24" />
 			<Setter Property="FontWeight" Value="Bold" />
 		</Style>
+		<Style Selector="TextBlock.hugeText">
+			<Setter Property="FontSize" Value="48" />
+			<Setter Property="FontWeight" Value="Bold" />
+		</Style>
 	</Window.Styles>
 
     <Design.DataContext>
@@ -48,12 +52,14 @@
 			<TextBlock Grid.Row="0" Grid.Column="3" Text=" Beats" />
 		</Grid>
 		<Grid
-			ColumnDefinitions="Auto, Auto"
+			ColumnDefinitions="Auto, Auto, Auto, Auto"
 			RowDefinitions="Auto, Auto">
-			<Button Grid.Row="0" Grid.Column="0" Command="{Binding DecreaseBpm}" Content="{Binding Interval, StringFormat='-{0}'}" />
-			<Button Grid.Row="0" Grid.Column="1" Command="{Binding IncreaseBpm}" Content="{Binding Interval, StringFormat='+{0}'}" />
+			<Button Grid.Row="0" Grid.Column="0" Command="{Binding DecreaseBpm}" CommandParameter="{Binding LargeInterval}" Content="{Binding LargeInterval, StringFormat='-{0}'}" />
+			<Button Grid.Row="0" Grid.Column="1" Command="{Binding DecreaseBpm}" CommandParameter="{Binding SmallInterval}" Content="{Binding SmallInterval, StringFormat='-{0}'}" />
+			<Button Grid.Row="0" Grid.Column="2" Command="{Binding IncreaseBpm}" CommandParameter="{Binding SmallInterval}" Content="{Binding SmallInterval, StringFormat='+{0}'}" />
+			<Button Grid.Row="0" Grid.Column="3" Command="{Binding IncreaseBpm}" CommandParameter="{Binding LargeInterval}" Content="{Binding LargeInterval, StringFormat='+{0}'}" />
 		</Grid>
-		<TextBlock Text="{Binding Count}" />
+		<TextBlock Classes="hugeText" Text="{Binding Count}" />
 	</StackPanel>
 
 </Window>
