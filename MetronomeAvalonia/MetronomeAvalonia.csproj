@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaResource Update="Assets\accenthit.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AvaloniaResource>
     <AvaloniaResource Update="Assets\hit.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AvaloniaResource>

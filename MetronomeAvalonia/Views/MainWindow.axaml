@@ -24,6 +24,25 @@
 			<Setter Property="FontSize" Value="48" />
 			<Setter Property="FontWeight" Value="Bold" />
 		</Style>
+		<Style Selector="ToggleButton">
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Border Width="20"
+							Height="20"
+							Background="{TemplateBinding Background}"
+							CornerRadius="4"/>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+		<Style Selector="ToggleButton:indeterminate">
+			<Setter Property="Background" Value="Yellow"/>
+		</Style>
+		<Style Selector="ToggleButton:unchecked">
+			<Setter Property="Background" Value="Gray"/>
+		</Style>
+		<Style Selector="ToggleButton:checked">
+			<Setter Property="Background" Value="Red"/>
+		</Style>
 	</Window.Styles>
 
     <Design.DataContext>
@@ -40,7 +59,7 @@
 			<ItemsControl ItemsSource="{Binding BeatStates}" Grid.Column="0" >
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<ToggleButton IsThreeState="True" IsChecked="{Binding .}" />
+						<ToggleButton IsThreeState="True" IsChecked="{Binding IsActive}" />
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>

@@ -23,13 +23,20 @@ namespace MetronomeMVVM.ViewModels
         [ObservableProperty]
         public Enums.NumCounts _numCounts = Enums.NumCounts.Four; // current meter
         [ObservableProperty]
-        public ObservableCollection<bool?> _beatStates = [true, true, true, true]; // accents - true: accent, false: normal, null: silent
+        public ObservableCollection<BeatState> _beatStates =
+        [
+            new BeatState { IsActive = true },
+            new BeatState { IsActive = true },
+            new BeatState { IsActive = true },
+            new BeatState { IsActive = true }
+        ]; // true: accent, false: silent, null: normal
         [ObservableProperty]
         private int _largeInterval = 5;
         [ObservableProperty]
         private int _smallInterval = 1;
 
         private Sound? normalSound;
+        private Sound? accentSound;
 
         public MainWindowViewModel()
         {
@@ -44,10 +51,13 @@ namespace MetronomeMVVM.ViewModels
                 var assemblyDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 var soundPath = Path.Combine(assemblyDirectory, "Assets", "hit.mp3");
                 normalSound = new Sound(new SoundBuffer(soundPath));
+                var accentSoundPath = Path.Combine(assemblyDirectory, "Assets", "accenthit.mp3");
+                accentSound = new Sound(new SoundBuffer(accentSoundPath));
             }
             catch
             {
                 normalSound = null;
+                accentSound = null;
             }
         }
 
@@ -89,7 +99,7 @@ namespace MetronomeMVVM.ViewModels
             {
                 for (int i = 0; i < diff; i++)
                 {
-                    BeatStates.Add(true);
+                    BeatStates.Add(new BeatState { IsActive = true });
                 }
             }
             else
@@ -105,8 +115,19 @@ namespace MetronomeMVVM.ViewModels
         {
             Dispatcher.UIThread.Post(() =>
             {
-                normalSound?.Play();
-                Count = ((Count) % (int)NumCounts) + 1;
+                int currentCount = Count % (int)NumCounts;
+                switch (BeatStates[currentCount].IsActive)
+                {
+                    case true:
+                        accentSound?.Play();
+                        break;
+                    case null:
+                        normalSound?.Play();
+                        break;
+                    case false:
+                        break;
+                }
+                Count = currentCount + 1;
                 System.Diagnostics.Debug.WriteLine($"Count: {Count} at {e.SignalTime:HH:mm:ss.fff}");
             });
         }
@@ -115,5 +136,10 @@ namespace MetronomeMVVM.ViewModels
         {
             return (int)(1000 / ((decimal)bpm / 60));
         }
+    }
+    public partial class BeatState : ObservableObject
+    {
+        [ObservableProperty]
+        private bool? _isActive;
     }
 }
