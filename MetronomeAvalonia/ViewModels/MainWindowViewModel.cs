@@ -34,6 +34,8 @@ namespace MetronomeMVVM.ViewModels
         private int _largeInterval = 5;
         [ObservableProperty]
         private int _smallInterval = 1;
+        [ObservableProperty]
+        private bool _isAnimating = false;
 
         private Sound? normalSound;
         private Sound? accentSound;
@@ -127,6 +129,8 @@ namespace MetronomeMVVM.ViewModels
                     case false:
                         break;
                 }
+                IsAnimating = false;
+                IsAnimating = true;
                 Count = currentCount + 1;
                 System.Diagnostics.Debug.WriteLine($"Count: {Count} at {e.SignalTime:HH:mm:ss.fff}");
             });
