@@ -6,6 +6,7 @@ using SFML.Audio;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace MetronomeMVVM.ViewModels
     public partial class MainWindowViewModel : ViewModelBase
     {
         private Timer timer;
+        private List<long> tapTimes = [];
         [ObservableProperty]
         public int _count = 0; // current count within meter
         [ObservableProperty]
@@ -93,6 +95,12 @@ namespace MetronomeMVVM.ViewModels
             StartMetronome();
         }
 
+        public void SetBpm(int bpm)
+        {
+            Bpm = bpm;
+            StartMetronome();
+        }
+
         public void ChangeMeter(int diff)
         {
             if ((int)NumCounts + diff < 2 || (int)NumCounts + diff > 6) return;
@@ -110,6 +118,24 @@ namespace MetronomeMVVM.ViewModels
                 {
                     BeatStates.RemoveAt(BeatStates.Count - 1);
                 }
+            }
+        }
+
+        public void Tap()
+        {
+            var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            if (tapTimes.Count > 0)
+            {
+                var diff = now - tapTimes.Last();
+                if (diff > 2000) tapTimes = [];
+            }
+
+            tapTimes.Add(now);
+            Debug.WriteLine($"Tapped at {now}");
+            if (tapTimes.Count >= 3)
+            {
+                var avg = tapTimes.Zip(tapTimes.Skip(1), (prev, curr) => curr - prev).Average();
+                SetBpm(MillisToBpm((int)avg));
             }
         }
 
@@ -139,6 +165,11 @@ namespace MetronomeMVVM.ViewModels
         private static int BpmToMillis(int bpm)
         {
             return (int)(1000 / ((decimal)bpm / 60));
+        }
+
+        private static int MillisToBpm(int millis)
+        {
+            return (int)((60 * 1000) / millis);
         }
     }
     public partial class BeatState : ObservableObject

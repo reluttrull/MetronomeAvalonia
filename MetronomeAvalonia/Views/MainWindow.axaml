@@ -97,6 +97,7 @@
 				<Button Grid.Row="0" Grid.Column="3" Command="{Binding IncreaseBpm}" CommandParameter="{Binding LargeInterval}" Content="{Binding LargeInterval, StringFormat='+{0}'}" />
 			</Grid>
 			<TextBlock Classes="hugeText" Text="{Binding Count}" />
+			<Button Command="{Binding Tap}" Content="Tap" />
 		</StackPanel>
 	</Border>
 
