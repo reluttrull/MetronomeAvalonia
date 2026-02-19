@@ -66,7 +66,7 @@
     </Design.DataContext>
 
 	<Border Name="MyBorder" Classes.FlashBorder="{Binding IsAnimating}"
-			BorderThickness="2" Padding="10">
+			BorderThickness="2" Padding="10" Background="Transparent" Focusable="True">
 		<StackPanel Spacing="10">
 			<TextBlock Classes="h1" Text="Metronome" />
 			<Grid
@@ -92,7 +92,8 @@
 			<Grid
 				ColumnDefinitions="Auto, Auto"
 				RowDefinitions="Auto, Auto">
-				<TextBlock Classes="hugeText" Grid.Row="0" Grid.Column="0" Text="{Binding Bpm}" />
+				<TextBlock Classes="hugeText" Grid.Row="0" Grid.Column="0" IsVisible="{Binding !IsEditingBpm}" Text="{Binding Bpm}" PointerPressed="OnBpmClicked" />
+				<TextBox Classes="hugeText" Name="EditBpmBox" Grid.Row="0" Grid.Column="0" Text="{Binding TempBpm}" IsVisible="{Binding IsEditingBpm}" LostFocus="OnBpmLostFocus" />
 				<TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Text=" Beats per minute" />
 			</Grid>
 			<Grid

@@ -3,5 +3,5 @@
 - [x] Add visual beat feedback (flash border?)
 - [x] Allow to change interval (1/5/10?)
 - [x] Add tap in
-- [ ] Add type tempo
+- [x] Add type tempo
 - [x] Option to quickly increase/decrease tempo by a large amount

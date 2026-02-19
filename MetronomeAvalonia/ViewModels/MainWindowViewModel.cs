@@ -21,6 +21,8 @@ namespace MetronomeMVVM.ViewModels
         [ObservableProperty]
         public int _count = 0; // current count within meter
         [ObservableProperty]
+        public string _tempBpm = string.Empty;
+        [ObservableProperty]
         public int _bpm = 60; // current beats per minute
         [ObservableProperty]
         public Enums.NumCounts _numCounts = Enums.NumCounts.Four; // current meter
@@ -38,6 +40,8 @@ namespace MetronomeMVVM.ViewModels
         private int _smallInterval = 1;
         [ObservableProperty]
         private bool _isAnimating = false;
+        [ObservableProperty]
+        private bool _isEditingBpm = false;
 
         private Sound? normalSound;
         private Sound? accentSound;
@@ -85,18 +89,17 @@ namespace MetronomeMVVM.ViewModels
 
         public void IncreaseBpm(int interval)
         {
-            Bpm += interval;
-            StartMetronome();
+            SetBpm(Bpm + interval);
         }
 
         public void DecreaseBpm(int interval)
         {
-            Bpm -= interval;
-            StartMetronome();
+            SetBpm(Bpm - interval);
         }
 
         public void SetBpm(int bpm)
         {
+            if (bpm < 35 || bpm > 240) return;
             Bpm = bpm;
             StartMetronome();
         }
