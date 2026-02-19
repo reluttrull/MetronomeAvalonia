@@ -2,7 +2,4 @@
 
 Just a proof-of-concept for now.
 
-
-
-https://github.com/user-attachments/assets/5ef48e01-35cf-4737-830b-20b515aad0a8
-
+https://github.com/user-attachments/assets/1b2c55e3-c333-4f51-8b1e-e4adc009889c
