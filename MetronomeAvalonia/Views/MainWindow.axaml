@@ -91,10 +91,12 @@
 			<Grid
 				ColumnDefinitions="Auto, Auto, Auto, Auto"
 				RowDefinitions="Auto, Auto">
-				<Button Grid.Row="0" Grid.Column="0" Command="{Binding DecreaseBpm}" CommandParameter="{Binding LargeInterval}" Content="{Binding LargeInterval, StringFormat='-{0}'}" />
+				<RepeatButton Grid.Row="0" Grid.Column="0" Command="{Binding DecreaseBpm}" CommandParameter="{Binding LargeInterval}" Content="{Binding LargeInterval, StringFormat='-{0}'}"
+							  Interval="100" Delay="600" />
 				<Button Grid.Row="0" Grid.Column="1" Command="{Binding DecreaseBpm}" CommandParameter="{Binding SmallInterval}" Content="{Binding SmallInterval, StringFormat='-{0}'}" />
 				<Button Grid.Row="0" Grid.Column="2" Command="{Binding IncreaseBpm}" CommandParameter="{Binding SmallInterval}" Content="{Binding SmallInterval, StringFormat='+{0}'}" />
-				<Button Grid.Row="0" Grid.Column="3" Command="{Binding IncreaseBpm}" CommandParameter="{Binding LargeInterval}" Content="{Binding LargeInterval, StringFormat='+{0}'}" />
+				<RepeatButton Grid.Row="0" Grid.Column="3" Command="{Binding IncreaseBpm}" CommandParameter="{Binding LargeInterval}" Content="{Binding LargeInterval, StringFormat='+{0}'}"
+							  Interval="100" Delay="600" />
 			</Grid>
 			<TextBlock Classes="hugeText" Text="{Binding Count}" />
 			<Button Command="{Binding Tap}" Content="Tap" />
