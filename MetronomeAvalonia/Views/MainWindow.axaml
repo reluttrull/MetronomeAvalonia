@@ -70,23 +70,30 @@
 		<StackPanel Spacing="10">
 			<TextBlock Classes="h1" Text="Metronome" />
 			<Grid
-				ColumnDefinitions="Auto, Auto, Auto"
-				RowDefinitions="Auto">
-				<ItemsControl ItemsSource="{Binding BeatStates}" Grid.Column="0" >
+				ColumnDefinitions="Auto"
+				RowDefinitions="Auto, Auto, Auto">
+				<ItemsControl ItemsSource="{Binding BeatStates}" Grid.Row="0" >
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
 							<ToggleButton IsThreeState="True" IsChecked="{Binding IsActive}" />
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
-				<Button Grid.Column="1" VerticalAlignment="Top" Command="{Binding ChangeMeter}" CommandParameter="-1" Content="-" />
-				<Button Grid.Column="2" VerticalAlignment="Top" Command="{Binding ChangeMeter}" CommandParameter="1" Content="+" />
+				<Grid Grid.Row="1" ColumnDefinitions="Auto, Auto" RowDefinitions="Auto">
+					<Button Grid.Column="0" VerticalAlignment="Top" Command="{Binding ChangeMeter}" CommandParameter="-1" Content="-" />
+					<Button Grid.Column="1" VerticalAlignment="Top" Command="{Binding ChangeMeter}" CommandParameter="1" Content="+" />
+				</Grid>
 			</Grid>
 			<Grid
 				ColumnDefinitions="Auto, Auto"
 				RowDefinitions="Auto, Auto">
-				<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Bpm}" />
-				<TextBlock Grid.Row="0" Grid.Column="1" Text=" Beats per minute" />
+				<TextBlock Classes="hugeText" Grid.Row="0" Grid.Column="0" Text="{Binding Bpm}" />
+				<TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Text=" Beats per minute" />
 			</Grid>
 			<Grid
 				ColumnDefinitions="Auto, Auto, Auto, Auto"
