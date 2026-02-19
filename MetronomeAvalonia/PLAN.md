@@ -5,3 +5,4 @@
 - [x] Add tap in
 - [x] Add type tempo
 - [x] Option to quickly increase/decrease tempo by a large amount
+- [x] Options to turn off flash or sound

@@ -42,6 +42,10 @@ namespace MetronomeMVVM.ViewModels
         private bool _isAnimating = false;
         [ObservableProperty]
         private bool _isEditingBpm = false;
+        [ObservableProperty]
+        private bool _isFlashOn = true;
+        [ObservableProperty]
+        private bool _isSoundOn = true;
 
         private Sound? normalSound;
         private Sound? accentSound;
@@ -142,27 +146,46 @@ namespace MetronomeMVVM.ViewModels
             }
         }
 
+        public void ToggleFlash()
+        {
+            IsFlashOn = !IsFlashOn;
+        }
+        public void ToggleSound()
+        {
+            IsSoundOn = !IsSoundOn;
+        }
+
         private void OnTimedEvent(Object? source, ElapsedEventArgs e)
         {
             Dispatcher.UIThread.Post(() =>
             {
                 int currentCount = Count % (int)NumCounts;
-                switch (BeatStates[currentCount].IsActive)
-                {
-                    case true:
-                        accentSound?.Play();
-                        break;
-                    case null:
-                        normalSound?.Play();
-                        break;
-                    case false:
-                        break;
-                }
-                IsAnimating = false;
-                IsAnimating = true;
+                if (IsSoundOn) MakeSound(currentCount);
+                if (IsFlashOn) MakeFlash();
                 Count = currentCount + 1;
                 System.Diagnostics.Debug.WriteLine($"Count: {Count} at {e.SignalTime:HH:mm:ss.fff}");
             });
+        }
+
+        private void MakeSound(int count)
+        {
+            switch (BeatStates[count].IsActive)
+            {
+                case true:
+                    accentSound?.Play();
+                    break;
+                case null:
+                    normalSound?.Play();
+                    break;
+                case false:
+                    break;
+            }
+        }
+
+        private void MakeFlash()
+        {
+            IsAnimating = false;
+            IsAnimating = true;
         }
 
         private static int BpmToMillis(int bpm)

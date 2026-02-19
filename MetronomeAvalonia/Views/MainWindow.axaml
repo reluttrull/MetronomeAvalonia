@@ -5,6 +5,7 @@
         xmlns:vm="using:MetronomeMVVM.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:i="https://github.com/projektanker/icons.avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MetronomeMVVM.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -68,7 +69,13 @@
 	<Border Name="MyBorder" Classes.FlashBorder="{Binding IsAnimating}"
 			BorderThickness="2" Padding="10" Background="Transparent" Focusable="True">
 		<StackPanel Spacing="10">
-			<TextBlock Classes="h1" Text="Metronome" />
+			<Grid ColumnDefinitions="Auto,Auto,Auto">
+				<TextBlock Grid.Column="0" Classes="h1" Text="Metronome" />
+				<Button Grid.Column="1" i:Attached.Icon="fa-solid fa-bolt" IsVisible="{Binding IsFlashOn}" Command="{Binding ToggleFlash}" />
+				<Button Grid.Column="1" i:Attached.Icon="fa-solid fa-eye-slash" IsVisible="{Binding !IsFlashOn}" Command="{Binding ToggleFlash}" />
+				<Button Grid.Column="2" i:Attached.Icon="fa-solid fa-volume-high" IsVisible="{Binding IsSoundOn}" Command="{Binding ToggleSound}" />
+				<Button Grid.Column="2" i:Attached.Icon="fa-solid fa-volume-off" IsVisible="{Binding !IsSoundOn}" Command="{Binding ToggleSound}" />
+			</Grid>
 			<Grid
 				ColumnDefinitions="Auto"
 				RowDefinitions="Auto, Auto, Auto">
