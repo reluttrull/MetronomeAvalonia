@@ -110,7 +110,7 @@ namespace MetronomeMVVM.ViewModels
 
         public void ChangeMeter(int diff)
         {
-            if ((int)NumCounts + diff < 2 || (int)NumCounts + diff > 6) return;
+            if ((int)NumCounts + diff < 1 || (int)NumCounts + diff > 12) return;
             NumCounts += diff;
             if (diff > 0)
             {
